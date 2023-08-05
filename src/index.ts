@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express, { Express, Request, Response, Router } from "express";
 import bucketRouter from "./routes/bucket";
-var cors = require('cors')
+import cors from "cors";
 
 
 dotenv.config();
