@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
-import express, { Express, Request, Response, Router } from "express";
-import bucketRouter from "./routes/bucket";
+import express, { Express, Request, Response } from "express";
+import studyplanRouter from "./routes/studyplans";
 import cors from "cors";
 
 
@@ -14,7 +14,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use(cors())
 
-app.use("/api/buckets", bucketRouter)
+app.use("/api/study_plans", studyplanRouter);
 
 app.listen(port, () => {
 	console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
