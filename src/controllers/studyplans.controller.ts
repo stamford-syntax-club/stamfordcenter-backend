@@ -1,10 +1,8 @@
-import express, { Request, Response, Router } from "express";
+import { Request, Response } from "express";
 import { getConnection } from "../utils/mongoconnection";
 import { convertResultToStudyPlan } from "../utils/converter";
 
-const studyplanRouter: Router = express.Router();
-
-studyplanRouter.get("/", async (req: Request, res: Response) => {
+const getAllStudyPlans = async (req: Request, res: Response) => {
     const client = await getConnection();
     if (!client) {
         return res.status(500).send("Failed to connect to db!");
@@ -18,6 +16,6 @@ studyplanRouter.get("/", async (req: Request, res: Response) => {
 
     const studyplans = results.map((r) => convertResultToStudyPlan(r));
     res.json(studyplans);
-});
+}
 
-export default studyplanRouter;
+export { getAllStudyPlans }
