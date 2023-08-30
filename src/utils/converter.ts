@@ -1,5 +1,5 @@
 import { WithId, Document } from "mongodb";
-import { StudyPlan } from "../model/studyplans.model";
+import { StudyPlan } from "@models/studyplans.model";
 
 export function convertResultToStudyPlan(result: WithId<Document>): StudyPlan {
     return {

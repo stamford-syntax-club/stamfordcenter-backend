@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { GetObjectCommand, NoSuchKey } from "@aws-sdk/client-s3";
 import { Readable } from "stream";
-import { s3Client } from "../utils/s3connection";
+import { s3Client } from "@utils/s3connection";
 
 const getFile = async (req: Request, res: Response) => {
     if (!req.params.fileKey) {

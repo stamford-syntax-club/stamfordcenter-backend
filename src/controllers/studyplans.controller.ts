@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { getConnection } from "../utils/mongoconnection";
-import { convertResultToStudyPlan } from "../utils/converter";
+import { getConnection } from "@utils/mongoconnection";
+import { convertResultToStudyPlan } from "@utils/converter";
 
 const getAllStudyPlans = async (req: Request, res: Response) => {
     const client = await getConnection();

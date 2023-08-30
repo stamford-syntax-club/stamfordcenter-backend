@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllStudyPlans } from "../controllers/studyplans.controller";
+import { getAllStudyPlans } from "@controllers/studyplans.controller";
 
 const studyplanRouter = express.Router();
 
