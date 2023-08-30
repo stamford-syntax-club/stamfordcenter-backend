@@ -1,11 +1,9 @@
-import express, { Request, Response, Router } from "express";
+import { Request, Response } from "express";
 import { GetObjectCommand, NoSuchKey } from "@aws-sdk/client-s3";
 import { Readable } from "stream";
-import { s3Client } from "../utils/s3connection";
+import { s3Client } from "@utils/s3connection";
 
-const fileRouter: Router = express.Router();
-
-fileRouter.get("/:fileKey", async (req: Request, res: Response) => {
+const getFile = async (req: Request, res: Response) => {
     if (!req.params.fileKey) {
         res.status(400).send("file key is required");
         return;
@@ -44,6 +42,6 @@ fileRouter.get("/:fileKey", async (req: Request, res: Response) => {
         res.status(500).send("internal server error");
         console.error("send file: ", err);
     }
-});
+}
 
-export default fileRouter;
+export { getFile }

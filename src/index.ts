@@ -1,7 +1,8 @@
+import 'module-alias/register';
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
-import studyplanRouter from "./routes/studyplans";
-import fileRouter from "./routes/files";
+import studyplanRouter from "@routes/studyplans.route";
+import fileRouter from "@routes/files.route";
 import cors from "cors";
 
 
