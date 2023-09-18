@@ -18,6 +18,7 @@ app.use(cors())
 
 app.use("/api/study_plans", studyplanRouter);
 app.use("/api/get_files", fileRouter);
+app.use("/api/files", fileRouter);
 
 app.listen(port, () => {
 	console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
