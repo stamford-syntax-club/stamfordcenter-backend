@@ -17,7 +17,6 @@ app.get("/", (req: Request, res: Response) => {
 app.use(cors())
 
 app.use("/api/study_plans", studyplanRouter);
-app.use("/api/get_files", fileRouter);
 app.use("/api/files", fileRouter);
 
 app.listen(port, () => {
