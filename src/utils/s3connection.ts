@@ -3,8 +3,8 @@ import { S3Client } from "@aws-sdk/client-s3";
 
 dotenv.config();
 const s3Client = new S3Client({
-    endpoint: process.env.S3_ENDPOINT,
-    forcePathStyle: true,
+	endpoint: process.env.S3_ENDPOINT,
+	forcePathStyle: true,
 });
 
 export { s3Client };

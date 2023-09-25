@@ -1,0 +1,98 @@
+version: "3.8"
+
+networks:
+    stamford:
+
+services:
+    db:
+        image: mongo
+        ports:
+            - 27017:27017
+        environment:
+            MONGO_INITDB_DATABASE: stamfordcenter
+        volumes:
+            - ./data/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+
+    s3-master:
+        image: chrislusf/seaweedfs
+        restart: on-failure
+        ports:
+            - 9333:9333
+            - 19333:19333
+        command: "master -ip=s3-master -ip.bind=0.0.0.0  -volumeSizeLimitMB=5 -volumePreallocate=false -mdir=/data"
+        networks:
+            - stamford
+
+    s3-volume:
+        image: chrislusf/seaweedfs
+        restart: on-failure
+        ports:
+            - 8181:8181
+            - 18080:18080
+        command: 'volume -mserver="s3-master:9333" -ip.bind=0.0.0.0 -port=8181 -max=0 -dir=/data'
+        depends_on:
+            - s3-master
+        networks:
+            - stamford
+
+    s3-filer:
+        image: chrislusf/seaweedfs
+        restart: on-failure
+        ports:
+            - 8888:8888
+            - 18888:18888
+        command: 'filer -master="s3-master:9333" -ip.bind=0.0.0.0  -defaultStoreDir=/data'
+        tty: true
+        stdin_open: true
+        depends_on:
+            - s3-master
+            - s3-volume
+        networks:
+            - stamford
+
+    s3:
+        image: chrislusf/seaweedfs
+        restart: on-failure
+        ports:
+            - 8333:8333
+        command: 's3 -filer="s3-filer:8888" -ip.bind=0.0.0.0'
+        depends_on:
+            - s3-master
+            - s3-volume
+            - s3-filer
+        networks:
+            - stamford
+
+    aws-cli-mb:
+        image: amazon/aws-cli
+        command: "s3 mb s3://stamford-center --endpoint-url http://s3:8333"
+        restart: on-failure
+        environment:
+            AWS_ACCESS_KEY_ID: TEST
+            AWS_SECRET_ACCESS_KEY: TEST
+            AWS_DEFAULT_REGION: us-west-2
+        depends_on:
+            - s3
+            - s3-master
+            - s3-volume
+            - s3-filer
+        networks:
+            - stamford
+
+    aws-cli-sync:
+        image: amazon/aws-cli
+        command: "s3 sync /data/studyplans s3://stamford-center --endpoint-url http://s3:8333"
+        restart: on-failure
+        environment:
+            AWS_ACCESS_KEY_ID: TEST
+            AWS_SECRET_ACCESS_KEY: TEST
+            AWS_DEFAULT_REGION: us-west-2
+        volumes:
+            - ./data/studyplans:/data/studyplans/
+        depends_on:
+            - s3
+            - s3-master
+            - s3-volume
+            - s3-filer
+        networks:
+            - stamford
