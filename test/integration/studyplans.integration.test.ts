@@ -12,7 +12,15 @@ describe("Studyplans API", () => {
 			expect(res.body.length).toBe(10);
 		});
 
-		// You can add more test cases, like what should happen if the database connection fails, etc.
+		it("should return 500 if database connection fails", async () => {
+			const client = await getConnection();
+			client?.close(); // simulate connection failure
+
+			const res = await request(app).get("/api/study_plans");
+
+			expect(res).toThrowError;
+			expect(res.status).toBe(httpStatus.INTERNAL_SERVER_ERROR);
+		});
 	});
 });
 
