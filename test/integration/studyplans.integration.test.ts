@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import { agent as request } from "supertest";
-import app from "../../src/index";
+import app from "../../src/app";
 import { getConnection } from "@utils/mongoconnection";
 
 describe("Studyplans API", () => {
@@ -9,6 +9,7 @@ describe("Studyplans API", () => {
 			const res = await request(app).get("/api/study_plans");
 
 			expect(res.status).toBe(httpStatus.OK);
+			expect(Array.isArray(res.body)).toBe(true); // Check if response body is an array
 			expect(res.body.length).toBe(10);
 		});
 
@@ -18,7 +19,6 @@ describe("Studyplans API", () => {
 
 			const res = await request(app).get("/api/study_plans");
 
-			expect(res).toThrowError;
 			expect(res.status).toBe(httpStatus.INTERNAL_SERVER_ERROR);
 		});
 	});
