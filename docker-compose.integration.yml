@@ -9,11 +9,11 @@ services:
             context: .
             dockerfile: Dockerfile.integration.test
         depends_on:
-            - db
+            - db-integration
         networks:
             - stamfordcenter
 
-    db:
+    db-integration:
         image: mongo
         ports:
             - 27017:27017
