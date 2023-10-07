@@ -4,14 +4,14 @@ import { Readable } from "stream";
 import { s3Client } from "@utils/s3connection";
 
 const getFile = async (req: Request, res: Response) => {
-	if (!req.params.fileKey) {
+	if (!req.params.fileKey || !req.params.page) {
 		res.status(400).send("file key is required");
 		return;
 	}
 
 	const cmd = new GetObjectCommand({
 		Bucket: "stamford-center",
-		Key: req.params.fileKey,
+		Key: `${req.params.page}/${req.params.fileKey}`,
 	});
 
 	try {
