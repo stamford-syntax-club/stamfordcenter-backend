@@ -31,7 +31,7 @@ const getAllResources = async (req: Request, res: Response) => {
 			return res.status(404).send("file not found");
 		}
 		const resources = results.map((r) => converterFunc(pageName, r));
-		res.json(resources);
+		res.status(200).json(resources);
 	} catch (err) {
 		console.error(`getAllResources: ${err}`);
 		return res.status(500).send("Something is wrong on our end, try again later");

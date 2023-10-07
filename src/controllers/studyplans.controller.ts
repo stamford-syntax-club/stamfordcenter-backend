@@ -12,7 +12,7 @@ const getAllStudyPlans = async (req: Request, res: Response) => {
 			return res.status(404).send("file not found");
 		}
 		const studyplans = results.map((r) => convertResultToStudyPlan("", r));
-		res.json(studyplans);
+		res.status(200).json(studyplans);
 	} catch (err) {
 		console.error(`getAllStudyPlans: ${err}`);
 		return res.status(500).send("Something is wrong on our end, try again later");
