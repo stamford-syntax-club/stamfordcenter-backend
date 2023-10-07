@@ -7,7 +7,6 @@ interface Resource {
 interface ResourceFile {
 	name: string;
 	key: string;
-	url: string;
 }
 
 export { Resource, ResourceFile };
