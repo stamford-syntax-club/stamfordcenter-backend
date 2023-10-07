@@ -4,7 +4,7 @@ import { Resource, ResourceFile } from "@models/resources.model";
 
 export function convertResultToStudyPlan(pageName: string, result: WithId<Document>): StudyPlan {
 	return {
-		fileKey: `/${pageName}/${result.fileKey}`,
+		fileKey: `${pageName}/${result.fileKey}`,
 		major: result.major ?? "",
 		major_abbrv: result.major_abbrv ?? "",
 		faculty: result.faculty ?? "",
@@ -20,7 +20,7 @@ export function convertResultsToResource(pageName: string, results: WithId<Docum
 		files: results.files.map((f: ResourceFile) => {
 			return {
 				name: f.name ?? "",
-				key: `/${pageName}/${f.key}`,
+				key: `${pageName}/${f.key}`,
 			};
 		}),
 	};
