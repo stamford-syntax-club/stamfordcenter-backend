@@ -1,4 +1,33 @@
 db = db.getSiblingDB("stamfordcenter");
+db.resources.insertMany([
+	{
+		_id: "65212e74aac38c41505660b3",
+		name: "Class Schedules & Full Name Lists",
+		iconURL: "some url",
+		files: [
+			{
+				name: "UG Class Schedule Term 1-2023",
+				key: "1_2023_class_schedule.pdf",
+			},
+		],
+	},
+	{
+		_id: "652133117f16520e8dee6d89",
+		name: "Academic Calendars",
+		iconURL: "some url again",
+		files: [
+			{
+				name: "Academic Calendar Term 1-2023",
+				key: "1_2023_academic_calendar.pdf",
+			},
+			{
+				name: "Academic Calendar Term 2-2023",
+				key: "2_2023_academic_calendar.pdf",
+			},
+		],
+	},
+]);
+
 db.study_plans.insertMany([
 	{
 		_id: "64d23756878817eb8038e3c0",
