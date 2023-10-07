@@ -4,14 +4,16 @@ import { Readable } from "stream";
 import { s3Client } from "@utils/s3connection";
 
 const getFile = async (req: Request, res: Response) => {
-	if (!req.params.fileKey || !req.params.page) {
+	if (!req.params.fileKey) {
 		res.status(400).send("file key is required");
 		return;
 	}
 
+	// support for '/:page/:fileKey' and legacy '/:fileKey' (will be removed in the future)
+	const key = `${req.params.page === undefined ? "" : req.params.page}/${req.params.fileKey}`;
 	const cmd = new GetObjectCommand({
 		Bucket: "stamford-center",
-		Key: `${req.params.page}/${req.params.fileKey}`,
+		Key: key,
 	});
 
 	try {
