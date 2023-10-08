@@ -9,9 +9,11 @@ const getFile = async (req: Request, res: Response) => {
 		return;
 	}
 
+	// support for '/:page/:fileKey' and legacy '/:fileKey' (will be removed in the future)
+	const key = `${req.params.page === undefined ? "" : req.params.page}/${req.params.fileKey}`;
 	const cmd = new GetObjectCommand({
 		Bucket: "stamford-center",
-		Key: req.params.fileKey,
+		Key: key,
 	});
 
 	try {

@@ -20,6 +20,6 @@ services:
         environment:
             MONGO_INITDB_DATABASE: stamfordcenter
         volumes:
-            - ./test/data/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+            - ./data/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
         networks:
             - stamfordcenter
