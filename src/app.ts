@@ -3,10 +3,11 @@ import cors from "cors";
 import fileRouter from "@routes/files.route";
 import studyplanRouter from "@routes/studyplans.route";
 import resourceRouter from "@routes/resources.route";
+import { BASE_URL } from "@utils/constants";
 
 const app = express();
 app.get("/", (req: Request, res: Response) => {
-	res.send("Express + TypeScript Server");
+	res.send("Express + TypeScript Server " + BASE_URL);
 });
 
 app.use(cors());

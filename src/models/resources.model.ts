@@ -6,7 +6,7 @@ interface Resource {
 
 interface ResourceFile {
 	name: string;
-	key: string;
+	key: string; // TODO: change to fileURL
 }
 
 export { Resource, ResourceFile };
