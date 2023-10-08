@@ -31,6 +31,33 @@ describe("Resources API", () => {
 			expect(res.status).toBe(httpStatus.BAD_REQUEST);
 		});
 	});
+
+	describe("GET /api/resources/", () => {
+		it("should return 404 not found", async () => {
+			const res = await request(app).get("/api/resources/");
+
+			expect(res.status).toBe(httpStatus.NOT_FOUND);
+		});
+	});
+
+	describe("GET /api/resources//", () => {
+		it("should return 404 not found", async () => {
+			const res = await request(app).get("/api/resources//");
+
+			expect(res.status).toBe(httpStatus.NOT_FOUND);
+		});
+	});
+
+	describe("Database connection failure", () => {
+		it("should return 500", async () => {
+			const client = await getConnection();
+			client?.close(); // simulate connection failure
+
+			const res = await request(app).get("/api/resources/study_plans");
+
+			expect(res.status).toBe(httpStatus.INTERNAL_SERVER_ERROR);
+		});
+	});
 });
 
 afterAll(async () => {
