@@ -28,12 +28,10 @@ describe("convertResultsToResource", () => {
 				files: [
 					{
 						name: "Mock1",
-						key: "resources/mock1.pdf",
 						url: `${URL}/resources/mock1.pdf`,
 					},
 					{
 						name: "Mock2",
-						key: "resources/mock2.pdf",
 						url: `${URL}/resources/mock2.pdf`,
 					},
 				],
@@ -64,7 +62,6 @@ describe("convertResultsToResource", () => {
 				files: [
 					{
 						name: "Mock1",
-						key: "resources/mock1.pdf",
 						url: `${URL}/resources/mock1.pdf`,
 					},
 				],

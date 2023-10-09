@@ -24,7 +24,6 @@ export function convertResultToResource(result: WithId<Document>): Resource {
 		files: result.files.map((file: ResourceFile) => {
 			return {
 				name: file.name ?? "",
-				key: file.key ?? "",
 				url: `${ENDPOINT}/${file.key}`,
 			};
 		}),
