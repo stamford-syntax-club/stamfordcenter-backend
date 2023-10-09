@@ -11,7 +11,7 @@ const getAllStudyPlans = async (req: Request, res: Response) => {
 		if (!results) {
 			return res.status(404).send("file not found");
 		}
-		const studyplans = results.map((r) => convertResultToStudyPlan("", r));
+		const studyplans = results.map((result) => convertResultToStudyPlan(result));
 		res.status(200).json(studyplans);
 	} catch (err) {
 		console.error(`getAllStudyPlans: ${err}`);

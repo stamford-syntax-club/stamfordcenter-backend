@@ -5,6 +5,7 @@ interface StudyPlan {
 	faculty: string;
 	language: string;
 	year: string;
+	url: string;
 }
 
 export { StudyPlan };

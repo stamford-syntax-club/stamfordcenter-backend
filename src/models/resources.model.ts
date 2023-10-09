@@ -1,12 +1,13 @@
 interface Resource {
 	name: string;
-	iconURL: string;
+	iconURL: string | null;
 	files: ResourceFile[];
 }
 
 interface ResourceFile {
 	name: string;
-	key: string; // TODO: change to fileURL
+	key: string;
+	url: string;
 }
 
 export { Resource, ResourceFile };
