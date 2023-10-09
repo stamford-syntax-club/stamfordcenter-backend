@@ -1,5 +1,5 @@
 import { WithId, Document } from "mongodb";
-import { convertResultToStudyPlan, convertResultToResource as convertResultToResource } from "@utils/converter";
+import { convertResultToStudyPlan, convertResultToResource } from "@utils/converter";
 import { getConnection } from "@utils/mongoconnection";
 import { Request, Response } from "express";
 
@@ -30,7 +30,7 @@ const getAllResources = async (req: Request, res: Response) => {
 		if (!results) {
 			return res.status(404).send("file not found");
 		}
-		const resources = results.map((r) => converterFunc(r));
+		const resources = results.map((result) => converterFunc(result));
 		res.status(200).json(resources);
 	} catch (err) {
 		console.error(`getAllResources: ${err}`);
