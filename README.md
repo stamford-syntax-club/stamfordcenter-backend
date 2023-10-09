@@ -84,6 +84,26 @@ The application will be available at `http://localhost:8080`.
 -   `npm start`: Start the production server.
 -   `npm run dev`: Start the development server.
 
+## Backup MongoDB Instance
+
+Requires Mongo Database Tools:
+
+-   [MacOS](https://www.mongodb.com/docs/database-tools/installation/installation-macos/)
+-   [Windows](https://www.mongodb.com/docs/database-tools/installation/installation-windows/)
+-   [Linux](https://www.mongodb.com/docs/database-tools/installation/installation-linux/)
+
+Create Backup Data (will output as `/dump` directory)
+
+```sh
+mongodump --uri=mongodb+srv://<USERNAME>:<PASSWORD>@<HOST>/stamfordcenter
+```
+
+Restore Backup Data
+
+```sh
+mongorestore --uri=--uri=mongodb+srv://<USERNAME>:<PASSWORD>@<HOST>/stamfordcenter dump/stamfordcenter/
+```
+
 ## License 📄
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
