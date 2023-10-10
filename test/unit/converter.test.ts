@@ -1,8 +1,6 @@
 import { ObjectId } from "mongodb";
-import { convertResultToResource, convertResultToStudyPlan } from "../../src/utils/converter";
-import { BASE_URL } from "@utils/constants";
-
-const URL = `${BASE_URL}/api/files`;
+import { convertResultToResource, convertResultToStudyPlan } from "@utils/converter";
+import { FILE_ENDPOINT_URL } from "@utils/constants";
 
 describe("convertResultsToResource", () => {
 	describe("happy case", () => {
@@ -24,15 +22,15 @@ describe("convertResultsToResource", () => {
 			};
 			const expected = {
 				name: "List of Mock Items",
-				iconURL: `${URL}/resources/mock-icon.png`,
+				iconURL: `${FILE_ENDPOINT_URL}/resources/mock-icon.png`,
 				files: [
 					{
 						name: "Mock1",
-						url: `${URL}/resources/mock1.pdf`,
+						url: `${FILE_ENDPOINT_URL}/resources/mock1.pdf`,
 					},
 					{
 						name: "Mock2",
-						url: `${URL}/resources/mock2.pdf`,
+						url: `${FILE_ENDPOINT_URL}/resources/mock2.pdf`,
 					},
 				],
 			};
@@ -62,7 +60,7 @@ describe("convertResultsToResource", () => {
 				files: [
 					{
 						name: "Mock1",
-						url: `${URL}/resources/mock1.pdf`,
+						url: `${FILE_ENDPOINT_URL}/resources/mock1.pdf`,
 					},
 				],
 			};
@@ -92,7 +90,7 @@ describe("convertResultToStudyPlan", () => {
 			faculty: "Mock Faculty",
 			language: "Mock Language",
 			year: "2020",
-			url: `${URL}/studyplans/mock.pdf`,
+			url: `${FILE_ENDPOINT_URL}/studyplans/mock.pdf`,
 		};
 
 		const actual = convertResultToStudyPlan(mockResult);

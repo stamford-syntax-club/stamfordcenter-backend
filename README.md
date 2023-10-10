@@ -101,7 +101,7 @@ mongodump --uri=mongodb+srv://<USERNAME>:<PASSWORD>@<HOST>/stamfordcenter
 Restore Backup Data
 
 ```sh
-mongorestore --uri=--uri=mongodb+srv://<USERNAME>:<PASSWORD>@<HOST>/stamfordcenter dump/stamfordcenter/
+mongorestore --uri=mongodb+srv://<USERNAME>:<PASSWORD>@<HOST>/stamfordcenter dump/stamfordcenter/
 ```
 
 ## License 📄

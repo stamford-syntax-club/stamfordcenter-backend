@@ -1,3 +1,4 @@
+// TODO: better to use a mock function for environment variables?
 describe("BASE URL when", () => {
 	// Mock the process.env
 	beforeEach(() => {
@@ -8,7 +9,7 @@ describe("BASE URL when", () => {
 		it("should return the production host URL", () => {
 			process.env.NODE_ENV = "production";
 
-			const BASE_URL = require("../../src/utils/constants").BASE_URL;
+			const BASE_URL = require("@utils/constants").BASE_URL;
 
 			expect(BASE_URL).toBe("https://center-be.stamford.dev");
 		});
@@ -18,7 +19,7 @@ describe("BASE URL when", () => {
 		it("should return the beta host URL", () => {
 			process.env.NODE_ENV = "beta";
 
-			const BASE_URL = require("../../src/utils/constants").BASE_URL;
+			const BASE_URL = require("@utils/constants").BASE_URL;
 
 			expect(BASE_URL).toBe("https://center-be-beta.stamford.dev");
 		});
@@ -29,7 +30,7 @@ describe("BASE URL when", () => {
 			process.env.NODE_ENV = "local";
 			process.env.PORT = "8080";
 
-			const BASE_URL = require("../../src/utils/constants").BASE_URL;
+			const BASE_URL = require("@utils/constants").BASE_URL;
 
 			expect(BASE_URL).toBe("http://localhost:8080");
 		});
