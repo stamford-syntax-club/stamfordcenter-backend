@@ -14,8 +14,8 @@ jobs:
             - name: Install Jest
               run: npm install --save-dev jest ts-jest @types/jest
 
-            # - name: Unit test
-            #   run: npm run unit
+            - name: Unit test
+              run: npm run unit
 
             - name: Integration test inside Docker Compose
               run: |

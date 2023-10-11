@@ -1,26 +1,28 @@
 import { WithId, Document } from "mongodb";
 import { StudyPlan } from "@models/studyplans.model";
 import { Resource, ResourceFile } from "@models/resources.model";
+import { FILE_ENDPOINT_URL } from "./constants";
 
-export function convertResultToStudyPlan(pageName: string, result: WithId<Document>): StudyPlan {
+export function convertResultToStudyPlan(result: WithId<Document>): StudyPlan {
 	return {
-		fileKey: `${pageName}/${result.fileKey}`,
+		fileKey: result.fileKey ?? "",
 		major: result.major ?? "",
 		major_abbrv: result.major_abbrv ?? "",
 		faculty: result.faculty ?? "",
 		language: result.language ?? "",
 		year: result.year ?? "",
+		url: `${FILE_ENDPOINT_URL}/${result.fileKey}`,
 	};
 }
 
-export function convertResultsToResource(pageName: string, results: WithId<Document>): Resource {
+export function convertResultToResource(result: WithId<Document>): Resource {
 	return {
-		name: results.name ?? "",
-		iconURL: results.iconURL ?? "",
-		files: results.files.map((f: ResourceFile) => {
+		name: result.name ?? "",
+		iconURL: result.iconURI ? `${FILE_ENDPOINT_URL}/${result.iconURI}` : null,
+		files: result.files.map((file: ResourceFile) => {
 			return {
-				name: f.name ?? "",
-				key: `${pageName}/${f.key}`,
+				name: file.name ?? "",
+				url: `${FILE_ENDPOINT_URL}/${file.key}`,
 			};
 		}),
 	};

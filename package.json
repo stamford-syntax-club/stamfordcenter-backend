@@ -5,7 +5,7 @@
 	"main": "dist/src/index.js",
 	"scripts": {
 		"build": "npx tsc",
-		"unit": "jest src/ -c jest.config.js --env=node --detectOpenHandles",
+		"unit": "jest test/unit -c jest.config.js --env=node --detectOpenHandles",
 		"integration": "jest test/integration -c jest.config.js --env=node --detectOpenHandles",
 		"start": "node dist/src/index.js",
 		"dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\""
