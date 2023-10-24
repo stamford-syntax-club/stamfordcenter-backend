@@ -1,5 +1,5 @@
-import { WithId, Document } from "mongodb";
-import { convertResultToStudyPlan, convertResultToResource } from "@utils/converter";
+import { Document, WithId } from "mongodb";
+import { convertResultToQuickLink, convertResultToResource, convertResultToStudyPlan } from "@utils/converter";
 import { getConnection } from "@utils/mongoconnection";
 import { Request, Response } from "express";
 
@@ -17,6 +17,9 @@ const getAllResources = async (req: Request, res: Response) => {
 			break;
 		case "resources":
 			converterFunc = convertResultToResource;
+			break;
+		case "quicklinks":
+			converterFunc = convertResultToQuickLink;
 			break;
 		default:
 			res.status(400).send("invalid page name");

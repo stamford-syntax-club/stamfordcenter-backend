@@ -1,6 +1,7 @@
-import { WithId, Document } from "mongodb";
+import { Document, WithId } from "mongodb";
 import { StudyPlan } from "@models/studyplans.model";
 import { Resource, ResourceFile } from "@models/resources.model";
+import { QuickLink } from "@models/quicklinks.model";
 import { FILE_ENDPOINT_URL } from "./constants";
 
 export function convertResultToStudyPlan(result: WithId<Document>): StudyPlan {
@@ -25,5 +26,15 @@ export function convertResultToResource(result: WithId<Document>): Resource {
 				url: `${FILE_ENDPOINT_URL}/${file.key}`,
 			};
 		}),
+	};
+}
+
+export function convertResultToQuickLink(result: WithId<Document>): QuickLink {
+	return {
+		title: result.title ?? "",
+		description: result.description ?? "",
+		imgURL: result.imgURL ? `${FILE_ENDPOINT_URL}/${result.imgURL}` : null,
+		link: result.link ?? "",
+		originalLink: result.originalLink ?? "",
 	};
 }
