@@ -57,5 +57,5 @@ jobs:
                   git config user.email "syntax@bot.com"
                   sed -i -E "s/ghcr.io\/stamford-syntax-club\/stamfordcenter-backend.*$/ghcr.io\/stamford-syntax-club\/stamfordcenter-backend:${GITHUB_SHA}/" stamfordcenter/docker-compose.dev.yaml
                   git add stamfordcenter/docker-compose.dev.yaml
-                  git commit -m "🤖 change docker image version to ${GITHUB_SHA}"
+                  git commit -m "🤖 [CENTER-BACKEND-DEV] change docker image version to ${GITHUB_SHA}"
                   git push origin deploy/backend-${GITHUB_SHA}

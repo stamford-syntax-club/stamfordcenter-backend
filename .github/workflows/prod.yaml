@@ -1,0 +1,46 @@
+name: Production Environment CI/CD
+
+on:
+    workflow_dispatch:
+        inputs:
+            approval:
+                description: "🔦 Backend Lead Approved"
+                required: true
+                type: boolean
+            acknowledge:
+                description: "📝 Infra Team acknowledged"
+                required: true
+                type: boolean
+            deploy-tag:
+                description: "🎯 Deploy docker tag"
+                required: true
+                type: string
+
+jobs:
+    gitops-prod:
+        runs-on: ubuntu-latest
+        steps:
+            - name: verify manual inputs
+              run: |
+                  { if [ '${{ inputs.approval }}' = 'false' ]; then echo "🔦 Backend Lead not approved yet"; exit 1; fi }
+                  { if [ '${{ inputs.acknowledge }}' = 'false' ]; then echo "📝 Infra Team not acknowledged yet"; exit 1; fi }
+
+            - name: checkout
+              uses: actions/checkout@v3
+              with:
+                  repository: stamford-syntax-club/infra
+                  fetch-depth: 0
+                  token: ${{ secrets.WORKFLOW_TOKEN }}
+
+            - name: create and checkout new branch
+              run: |
+                  git checkout -b deploy/prod/backend-${{ inputs.deploy-tag }}
+
+            - name: change prod image tag
+              run: |
+                  git config user.name "syntax-prod-bot"
+                  git config user.email "syntax-prod@bot.com"
+                  sed -i -E "s/ghcr.io\/stamford-syntax-club\/stamfordcenter-backend.*$/ghcr.io\/stamford-syntax-club\/stamfordcenter-backend:${{ inputs.deploy-tag }}/" stamfordcenter/docker-compose.prod.yaml
+                  git add stamfordcenter/docker-compose.prod.yaml
+                  git commit -m "🤖 [CENTER-BACKEND-PROD] change docker image version to ${{ inputs.deploy-tag }}"
+                  git push origin deploy/prod/backend-${{ inputs.deploy-tag }}
