@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { convertResultToResource, convertResultToStudyPlan } from "@utils/converter";
+import { convertResultToQuickLink, convertResultToResource, convertResultToStudyPlan } from "@utils/converter";
 import { FILE_ENDPOINT_URL } from "@utils/constants";
 
 describe("convertResultsToResource", () => {
@@ -94,6 +94,30 @@ describe("convertResultToStudyPlan", () => {
 		};
 
 		const actual = convertResultToStudyPlan(mockResult);
+
+		expect(actual).toEqual(expected);
+	});
+});
+
+describe("convertResultToQuickLink", () => {
+	it("should convert correctly", () => {
+		const mockResult = {
+			_id: new ObjectId("5f9e2a3b9d3b9a0d9c9d3b9a"),
+			title: "Mock Title",
+			description: "Mock Description",
+			imgURI: "quicklinks/mock.png",
+			link: "https://mock.com",
+			originalLink: "https://mock.com",
+		};
+		const expected = {
+			title: "Mock Title",
+			description: "Mock Description",
+			imgURL: `${FILE_ENDPOINT_URL}/quicklinks/mock.png`,
+			link: "https://mock.com",
+			originalLink: "https://mock.com",
+		};
+
+		const actual = convertResultToQuickLink(mockResult);
 
 		expect(actual).toEqual(expected);
 	});

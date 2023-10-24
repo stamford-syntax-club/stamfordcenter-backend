@@ -33,7 +33,7 @@ export function convertResultToQuickLink(result: WithId<Document>): QuickLink {
 	return {
 		title: result.title ?? "",
 		description: result.description ?? "",
-		imgURL: result.imgURL ? `${FILE_ENDPOINT_URL}/${result.imgURL}` : null,
+		imgURL: result.imgURI ? `${FILE_ENDPOINT_URL}/${result.imgURI}` : null,
 		link: result.link ?? "",
 		originalLink: result.originalLink ?? "",
 	};
