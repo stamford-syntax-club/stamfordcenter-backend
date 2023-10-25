@@ -3,7 +3,7 @@ db.resources.insertMany([
 	{
 		_id: "65212e74aac38c41505660b3",
 		name: "Class Schedules & Full Name Lists",
-		iconURL: "some url",
+		iconURI: "some uri",
 		files: [
 			{
 				name: "UG Class Schedule Term 1-2023",
@@ -14,7 +14,7 @@ db.resources.insertMany([
 	{
 		_id: "652133117f16520e8dee6d89",
 		name: "Academic Calendars",
-		iconURL: "some url again",
+		iconURI: "some uri again",
 		files: [
 			{
 				name: "Academic Calendar Term 1-2023",
@@ -26,6 +26,33 @@ db.resources.insertMany([
 			},
 		],
 	},
+]);
+
+db.quicklinks.insertMany([
+  {
+    _id: "65380725d28087758a436d7c",
+    title: "Blackboard",
+    description: "blackboard",
+    imgURI: "some uri",
+    link: "https://learn.stamford.edu/",
+    originalLink: "https://learn.stamford.edu/",
+  },
+  {
+    _id: "65380725d28087758a436d7d",
+    title: "Registrar",
+    description: "registrar",
+    imgURI: "some uri",
+    link: "https://reg.stamford.edu/",
+    originalLink: "https://reg.stamford.edu/",
+  },
+  {
+    _id: "65380725d28087758a436d7e",
+    title: "Library",
+    description: "library",
+    imgURI: "some uri",
+    link: "https://library.stamford.edu/",
+    originalLink: "https://library.stamford.edu/",
+  }
 ]);
 
 db.study_plans.insertMany([

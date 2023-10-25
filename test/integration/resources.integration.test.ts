@@ -24,6 +24,16 @@ describe("Resources API", () => {
 		});
 	});
 
+  describe("GET /api/resources/quicklinks/", () => {
+    it("should return all data for quicklinks page", async () => {
+      const res = await request(app).get("/api/resources/quicklinks");
+
+      expect(res.status).toBe(httpStatus.OK);
+      expect(Array.isArray(res.body)).toBe(true);
+      expect(res.body.length).toBe(3);
+    });
+  });
+
 	describe("GET /api/resources/ayo-brother", () => {
 		it("should return 400 invalid page name", async () => {
 			const res = await request(app).get("/api/resources/ayo-brother");
