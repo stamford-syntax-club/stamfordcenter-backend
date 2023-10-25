@@ -3,6 +3,12 @@ import { convertResultToQuickLink, convertResultToResource, convertResultToStudy
 import { getConnection } from "@utils/mongoconnection";
 import { Request, Response } from "express";
 
+const converters = new Map<string, (result: WithId<Document>) => any>([
+	["study_plans", convertResultToStudyPlan],
+	["resources", convertResultToResource],
+	["quicklinks", convertResultToQuickLink],
+]);
+
 const getAllResources = async (req: Request, res: Response) => {
 	const pageName = req.params.page;
 	if (!pageName) {
@@ -10,28 +16,18 @@ const getAllResources = async (req: Request, res: Response) => {
 		return;
 	}
 
-	let converterFunc: (result: WithId<Document>) => any;
-	switch (pageName) {
-		case "study_plans":
-			converterFunc = convertResultToStudyPlan;
-			break;
-		case "resources":
-			converterFunc = convertResultToResource;
-			break;
-		case "quicklinks":
-			converterFunc = convertResultToQuickLink;
-			break;
-		default:
-			res.status(400).send("invalid page name");
-			return;
-	}
+  const	converterFunc = converters.get(pageName);
+  if (!converterFunc) {
+    res.status(400).send("page not supported");
+    return;
+  }
 
 	try {
 		const client = await getConnection();
 		const data = client?.db("stamfordcenter").collection(pageName).find({});
 		const results = await data?.toArray();
 		if (!results) {
-			return res.status(404).send("file not found");
+			return res.status(404).send("content not found");
 		}
 		const resources = results.map((result) => converterFunc(result));
 		res.status(200).json(resources);
