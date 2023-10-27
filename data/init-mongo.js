@@ -29,30 +29,30 @@ db.resources.insertMany([
 ]);
 
 db.quicklinks.insertMany([
-  {
-    _id: "65380725d28087758a436d7c",
-    title: "Blackboard",
-    description: "blackboard",
-    imgURI: "some uri",
-    link: "https://learn.stamford.edu/",
-    originalLink: "https://learn.stamford.edu/",
-  },
-  {
-    _id: "65380725d28087758a436d7d",
-    title: "Registrar",
-    description: "registrar",
-    imgURI: "some uri",
-    link: "https://reg.stamford.edu/",
-    originalLink: "https://reg.stamford.edu/",
-  },
-  {
-    _id: "65380725d28087758a436d7e",
-    title: "Library",
-    description: "library",
-    imgURI: "some uri",
-    link: "https://library.stamford.edu/",
-    originalLink: "https://library.stamford.edu/",
-  }
+	{
+		_id: "65380725d28087758a436d7c",
+		title: "Blackboard",
+		description: "blackboard",
+		imgURI: "some uri",
+		link: "https://learn.stamford.edu/",
+		originalLink: "https://learn.stamford.edu/",
+	},
+	{
+		_id: "65380725d28087758a436d7d",
+		title: "Registrar",
+		description: "registrar",
+		imgURI: "some uri",
+		link: "https://reg.stamford.edu/",
+		originalLink: "https://reg.stamford.edu/",
+	},
+	{
+		_id: "65380725d28087758a436d7e",
+		title: "Library",
+		description: "library",
+		imgURI: "some uri",
+		link: "https://library.stamford.edu/",
+		originalLink: "https://library.stamford.edu/",
+	},
 ]);
 
 db.study_plans.insertMany([

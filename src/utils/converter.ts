@@ -14,7 +14,7 @@ function verifyFieldsFor(resourceName: string, fields: string[], result: WithId<
 export function convertResultToStudyPlan(result: WithId<Document>): StudyPlan {
 	verifyFieldsFor("StudyPlan", ["fileKey", "major", "major_abbrv", "faculty", "language", "year"], result);
 	return {
-		fileKey: result.fileKey, 
+		fileKey: result.fileKey,
 		major: result.major,
 		major_abbrv: result.major_abbrv,
 		faculty: result.faculty,

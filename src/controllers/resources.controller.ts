@@ -16,11 +16,11 @@ const getAllResources = async (req: Request, res: Response) => {
 		return;
 	}
 
-  const	converterFunc = converters.get(pageName);
-  if (!converterFunc) {
-    res.status(400).send(`The page ${pageName} is not supported.`);
-    return;
-  }
+	const converterFunc = converters.get(pageName);
+	if (!converterFunc) {
+		res.status(400).send(`The page ${pageName} is not supported.`);
+		return;
+	}
 
 	try {
 		const client = await getConnection();
