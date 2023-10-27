@@ -100,25 +100,60 @@ describe("convertResultToStudyPlan", () => {
 });
 
 describe("convertResultToQuickLink", () => {
-	it("should convert correctly", () => {
-		const mockResult = {
-			_id: new ObjectId("5f9e2a3b9d3b9a0d9c9d3b9a"),
-			title: "Mock Title",
-			description: "Mock Description",
-			imgURI: "quicklinks/mock.png",
-			link: "https://mock.com",
-			originalLink: "https://mock.com",
-		};
-		const expected = {
-			title: "Mock Title",
-			description: "Mock Description",
-			imgURL: `${FILE_ENDPOINT_URL}/quicklinks/mock.png`,
-			link: "https://mock.com",
-			originalLink: "https://mock.com",
-		};
+	describe("when every field is present", () => {
+		it("should convert correctly", () => {
+			const mockResult = {
+				_id: new ObjectId("5f9e2a3b9d3b9a0d9c9d3b9a"),
+				title: "Mock Title",
+				description: "Mock Description",
+				imgURI: "quicklinks/mock.png",
+				link: "https://mock.com",
+				originalLink: "https://mock.com",
+			};
+			const expected = {
+				title: "Mock Title",
+				description: "Mock Description",
+				imgURL: `${FILE_ENDPOINT_URL}/quicklinks/mock.png`,
+				link: "https://mock.com",
+				originalLink: "https://mock.com",
+			};
 
-		const actual = convertResultToQuickLink(mockResult);
+			const actual = convertResultToQuickLink(mockResult);
 
-		expect(actual).toEqual(expected);
+			expect(actual).toEqual(expected);
+		});
+	});
+
+	describe("when one field is missing", () => {
+		it("should throw an error specifying the missing field", () => {
+			const mockResult = {
+				_id: new ObjectId("5f9e2a3b9d3b9a0d9c9d3b9a"),
+				description: "Mock Description",
+				imgURI: "quicklinks/mock.png",
+				link: "https://mock.com",
+				originalLink: "https://mock.com",
+			};
+
+			// must wrap the code in a function, otherwise the error will not be caught
+			// https://jestjs.io/docs/expect#tothrowerror
+			const action = () => convertResultToQuickLink(mockResult);
+
+			expect(action).toThrow("Missing field 'title' to create a quicklink object");
+		});
+	});
+
+	describe("when multiple fields are missing", () => {
+		it("should throw an error specifying the missing fields", () => {
+			const mockResult = {
+				_id: new ObjectId("5f9e2a3b9d3b9a0d9c9d3b9a"),
+				imgURI: "quicklinks/mock.png",
+				link: "https://mock.com",
+				originalLink: "https://mock.com",
+			};
+
+			const action = () => convertResultToQuickLink(mockResult);
+
+			expect(action).toThrow("Missing field 'title,description' to create a quicklink object");
+		});
 	});
 });

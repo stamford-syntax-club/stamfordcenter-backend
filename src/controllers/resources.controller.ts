@@ -18,7 +18,7 @@ const getAllResources = async (req: Request, res: Response) => {
 
   const	converterFunc = converters.get(pageName);
   if (!converterFunc) {
-    res.status(400).send("page not supported");
+    res.status(400).send(`The page ${pageName} is not supported.`);
     return;
   }
 
@@ -27,7 +27,7 @@ const getAllResources = async (req: Request, res: Response) => {
 		const data = client?.db("stamfordcenter").collection(pageName).find({});
 		const results = await data?.toArray();
 		if (!results) {
-			return res.status(404).send("content not found");
+			return res.status(404).send(`content for page ${pageName} not found`);
 		}
 		const resources = results.map((result) => converterFunc(result));
 		res.status(200).json(resources);

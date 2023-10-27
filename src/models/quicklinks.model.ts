@@ -1,7 +1,7 @@
 interface QuickLink {
 	title: string;
 	description: string;
-	imgURL: string | null;
+	imgURL?: string;
 	link: string;
 	originalLink: string;
 }

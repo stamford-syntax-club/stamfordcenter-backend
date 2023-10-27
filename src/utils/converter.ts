@@ -30,11 +30,16 @@ export function convertResultToResource(result: WithId<Document>): Resource {
 }
 
 export function convertResultToQuickLink(result: WithId<Document>): QuickLink {
+	const missingFields = ["title", "description", "imgURI", "link", "originalLink"].filter((field) => !result[field]);
+	if (missingFields.length > 0) {
+		throw new Error(`Missing field '${missingFields}' to create a quicklink object`);
+	}
+
 	return {
-		title: result.title ?? "",
-		description: result.description ?? "",
-		imgURL: result.imgURI ? `${FILE_ENDPOINT_URL}/${result.imgURI}` : null,
-		link: result.link ?? "",
-		originalLink: result.originalLink ?? "",
+		title: result.title,
+		description: result.description,
+		imgURL: `${FILE_ENDPOINT_URL}/${result.imgURI}`,
+		link: result.link,
+		originalLink: result.originalLink,
 	};
 }
