@@ -3,7 +3,7 @@ import { convertResultToQuickLink, convertResultToResource, convertResultToStudy
 import { FILE_ENDPOINT_URL } from "@utils/constants";
 
 describe("convertResultsToResource", () => {
-	describe("happy case", () => {
+	describe("when every field is present", () => {
 		it("should convert correctly", () => {
 			const mockResult = {
 				_id: new ObjectId("5f9e2a3b9d3b9a0d9c9d3b9a"),
@@ -41,61 +41,73 @@ describe("convertResultsToResource", () => {
 		});
 	});
 
-	describe("when iconURI is undefined", () => {
-		it("should give null iconURL", () => {
+	describe("when fields are missing", () => {
+		it("should throw an error specifying the missing fields", () => {
 			const mockResult = {
 				_id: new ObjectId("5f9e2a3b9d3b9a0d9c9d3b9a"),
-				name: "List of Mock Items",
-				iconURI: undefined,
 				files: [
 					{
 						name: "Mock1",
 						key: "resources/mock1.pdf",
 					},
-				],
-			};
-			const expected = {
-				name: "List of Mock Items",
-				iconURL: null,
-				files: [
 					{
-						name: "Mock1",
-						url: `${FILE_ENDPOINT_URL}/resources/mock1.pdf`,
+						name: "Mock2",
+						key: "resources/mock2.pdf",
 					},
 				],
 			};
 
-			const actual = convertResultToResource(mockResult);
+			// must wrap the code in a function, otherwise the error will not be caught
+			// https://jestjs.io/docs/expect#tothrowerror
+			const action = () => convertResultToResource(mockResult);
 
-			expect(actual).toEqual(expected);
+			expect(action).toThrow("Missing field 'name,iconURI' to create Resource");
 		});
 	});
 });
 
 describe("convertResultToStudyPlan", () => {
-	it("should convert correctly", () => {
-		const mockResult = {
-			_id: new ObjectId("5f9e2a3b9d3b9a0d9c9d3b9a"),
-			fileKey: "studyplans/mock.pdf",
-			major: "Mock Major",
-			major_abbrv: "MM",
-			faculty: "Mock Faculty",
-			language: "Mock Language",
-			year: "2020",
-		};
-		const expected = {
-			fileKey: "studyplans/mock.pdf",
-			major: "Mock Major",
-			major_abbrv: "MM",
-			faculty: "Mock Faculty",
-			language: "Mock Language",
-			year: "2020",
-			url: `${FILE_ENDPOINT_URL}/studyplans/mock.pdf`,
-		};
+	describe("when every field is present", () => {
+		it("should convert correctly", () => {
+			const mockResult = {
+				_id: new ObjectId("5f9e2a3b9d3b9a0d9c9d3b9a"),
+				fileKey: "studyplans/mock.pdf",
+				major: "Mock Major",
+				major_abbrv: "MM",
+				faculty: "Mock Faculty",
+				language: "Mock Language",
+				year: "2020",
+			};
+			const expected = {
+				fileKey: "studyplans/mock.pdf",
+				major: "Mock Major",
+				major_abbrv: "MM",
+				faculty: "Mock Faculty",
+				language: "Mock Language",
+				year: "2020",
+				url: `${FILE_ENDPOINT_URL}/studyplans/mock.pdf`,
+			};
 
-		const actual = convertResultToStudyPlan(mockResult);
+			const actual = convertResultToStudyPlan(mockResult);
 
-		expect(actual).toEqual(expected);
+			expect(actual).toEqual(expected);
+		});
+	});
+
+	describe("when fields are missing", () => {
+		it("should throw an error specifying the missing fields", () => {
+			const mockResult = {
+				_id: new ObjectId("5f9e2a3b9d3b9a0d9c9d3b9a"),
+				fileKey: "studyplans/mock.pdf",
+				major: "Mock Major",
+				major_abbrv: "MM",
+				faculty: "Mock Faculty",
+			};
+
+			const action = () => convertResultToStudyPlan(mockResult);
+
+			expect(action).toThrow("Missing field 'language,year' to create StudyPlan");
+		});
 	});
 });
 
@@ -124,25 +136,7 @@ describe("convertResultToQuickLink", () => {
 		});
 	});
 
-	describe("when one field is missing", () => {
-		it("should throw an error specifying the missing field", () => {
-			const mockResult = {
-				_id: new ObjectId("5f9e2a3b9d3b9a0d9c9d3b9a"),
-				description: "Mock Description",
-				imgURI: "quicklinks/mock.png",
-				link: "https://mock.com",
-				originalLink: "https://mock.com",
-			};
-
-			// must wrap the code in a function, otherwise the error will not be caught
-			// https://jestjs.io/docs/expect#tothrowerror
-			const action = () => convertResultToQuickLink(mockResult);
-
-			expect(action).toThrow("Missing field 'title' to create QuickLink");
-		});
-	});
-
-	describe("when multiple fields are missing", () => {
+	describe("when fields are missing", () => {
 		it("should throw an error specifying the missing fields", () => {
 			const mockResult = {
 				_id: new ObjectId("5f9e2a3b9d3b9a0d9c9d3b9a"),
@@ -154,6 +148,6 @@ describe("convertResultToQuickLink", () => {
 			const action = () => convertResultToQuickLink(mockResult);
 
 			expect(action).toThrow("Missing field 'title,description' to create QuickLink");
-    });
+		});
 	});
 });
