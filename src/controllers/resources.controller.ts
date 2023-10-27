@@ -29,7 +29,7 @@ const getAllResources = async (req: Request, res: Response) => {
 		if (!results) {
 			return res.status(404).send(`content for page ${pageName} not found`);
 		}
-		const resources = results.map((result) => converterFunc(result));
+		const resources = results.map((result) => converterFunc(result)).filter((resource) => resource !== undefined);
 		res.status(200).json(resources);
 	} catch (err) {
 		console.error(`getAllResources: ${err}`);

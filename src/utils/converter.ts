@@ -7,12 +7,18 @@ import { FILE_ENDPOINT_URL } from "./constants";
 function verifyFieldsFor(resourceName: string, fields: string[], result: WithId<Document>) {
 	const missingFields = fields.filter((field) => !result[field]);
 	if (missingFields.length > 0) {
-		throw new Error(`Missing field '${missingFields}' in resource id ${result._id} to create ${resourceName}`);
+		throw new Error(`Missing field '${missingFields}' in result id: ${result._id} to create ${resourceName}`);
 	}
 }
 
-export function convertResultToStudyPlan(result: WithId<Document>): StudyPlan {
-	verifyFieldsFor("StudyPlan", ["fileKey", "major", "major_abbrv", "faculty", "language", "year"], result);
+export function convertResultToStudyPlan(result: WithId<Document>): StudyPlan | undefined {
+	try {
+		verifyFieldsFor("StudyPlan", ["fileKey", "major", "major_abbrv", "faculty", "language", "year"], result);
+	} catch (error) {
+		console.warn(`StudyPlanConverter: ${error}`);
+		return;
+	}
+
 	return {
 		fileKey: result.fileKey,
 		major: result.major,
@@ -24,8 +30,14 @@ export function convertResultToStudyPlan(result: WithId<Document>): StudyPlan {
 	};
 }
 
-export function convertResultToResource(result: WithId<Document>): Resource {
-	verifyFieldsFor("Resource", ["name", "iconURI", "files"], result);
+export function convertResultToResource(result: WithId<Document>): Resource | undefined {
+	try {
+		verifyFieldsFor("Resource", ["name", "iconURI", "files"], result);
+	} catch (error) {
+		console.warn(`ResourceConverter: ${error}`);
+		return;
+	}
+
 	return {
 		name: result.name,
 		iconURL: `${FILE_ENDPOINT_URL}/${result.iconURI}`,
@@ -38,8 +50,14 @@ export function convertResultToResource(result: WithId<Document>): Resource {
 	};
 }
 
-export function convertResultToQuickLink(result: WithId<Document>): QuickLink {
-	verifyFieldsFor("QuickLink", ["title", "description", "imgURI", "link", "originalLink"], result);
+export function convertResultToQuickLink(result: WithId<Document>): QuickLink | undefined {
+	try {
+		verifyFieldsFor("QuickLink", ["title", "description", "imgURI", "link", "originalLink"], result);
+	} catch (error) {
+		console.warn(`QuickLinkConverter: ${error}`);
+		return;
+	}
+
 	return {
 		title: result.title,
 		description: result.description,

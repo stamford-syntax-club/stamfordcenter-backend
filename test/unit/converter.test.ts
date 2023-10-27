@@ -2,6 +2,8 @@ import { ObjectId } from "mongodb";
 import { convertResultToQuickLink, convertResultToResource, convertResultToStudyPlan } from "@utils/converter";
 import { FILE_ENDPOINT_URL } from "@utils/constants";
 
+const consoleWarnSpy = jest.spyOn(console, "warn");
+
 describe("convertResultsToResource", () => {
 	describe("when every field is present", () => {
 		it("should convert correctly", () => {
@@ -42,7 +44,7 @@ describe("convertResultsToResource", () => {
 	});
 
 	describe("when fields are missing", () => {
-		it("should throw an error specifying the missing fields", () => {
+		it("should return as undefined and log result.id + fields that are missing", () => {
 			const mockResult = {
 				_id: new ObjectId("5f9e2a3b9d3b9a0d9c9d3b9a"),
 				files: [
@@ -57,11 +59,12 @@ describe("convertResultsToResource", () => {
 				],
 			};
 
-			// must wrap the code in a function, otherwise the error will not be caught
-			// https://jestjs.io/docs/expect#tothrowerror
-			const action = () => convertResultToResource(mockResult);
+			const actual = convertResultToResource(mockResult);
 
-			expect(action).toThrow("Missing field 'name,iconURI' to create Resource");
+			expect(actual).toBeUndefined();
+			expect(consoleWarnSpy).toHaveBeenCalledWith(
+				`ResourceConverter: Error: Missing field 'name,iconURI' in result id: ${mockResult._id} to create Resource`,
+			);
 		});
 	});
 });
@@ -95,7 +98,7 @@ describe("convertResultToStudyPlan", () => {
 	});
 
 	describe("when fields are missing", () => {
-		it("should throw an error specifying the missing fields", () => {
+		it("should return as undefined and log result.id + fields that are missing", () => {
 			const mockResult = {
 				_id: new ObjectId("5f9e2a3b9d3b9a0d9c9d3b9a"),
 				fileKey: "studyplans/mock.pdf",
@@ -104,9 +107,12 @@ describe("convertResultToStudyPlan", () => {
 				faculty: "Mock Faculty",
 			};
 
-			const action = () => convertResultToStudyPlan(mockResult);
+			const actual = convertResultToStudyPlan(mockResult);
 
-			expect(action).toThrow("Missing field 'language,year' to create StudyPlan");
+			expect(actual).toBeUndefined();
+			expect(consoleWarnSpy).toHaveBeenCalledWith(
+				`StudyPlanConverter: Error: Missing field 'language,year' in result id: ${mockResult._id} to create StudyPlan`,
+			);
 		});
 	});
 });
@@ -137,7 +143,7 @@ describe("convertResultToQuickLink", () => {
 	});
 
 	describe("when fields are missing", () => {
-		it("should throw an error specifying the missing fields", () => {
+		it("should return as undefined and log result.id + fields that are missing", () => {
 			const mockResult = {
 				_id: new ObjectId("5f9e2a3b9d3b9a0d9c9d3b9a"),
 				imgURI: "quicklinks/mock.png",
@@ -145,9 +151,12 @@ describe("convertResultToQuickLink", () => {
 				originalLink: "https://mock.com",
 			};
 
-			const action = () => convertResultToQuickLink(mockResult);
+			const actual = convertResultToQuickLink(mockResult);
 
-			expect(action).toThrow("Missing field 'title,description' to create QuickLink");
+			expect(actual).toBeUndefined();
+			expect(consoleWarnSpy).toHaveBeenCalledWith(
+				`QuickLinkConverter: Error: Missing field 'title,description' in result id: ${mockResult._id} to create QuickLink`,
+			);
 		});
 	});
 });
