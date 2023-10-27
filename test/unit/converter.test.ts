@@ -138,7 +138,7 @@ describe("convertResultToQuickLink", () => {
 			// https://jestjs.io/docs/expect#tothrowerror
 			const action = () => convertResultToQuickLink(mockResult);
 
-			expect(action).toThrow("Missing field 'title' to create a quicklink object");
+			expect(action).toThrow("Missing field 'title' to create QuickLink");
 		});
 	});
 
@@ -153,7 +153,7 @@ describe("convertResultToQuickLink", () => {
 
 			const action = () => convertResultToQuickLink(mockResult);
 
-			expect(action).toThrow("Missing field 'title,description' to create a quicklink object");
-		});
+			expect(action).toThrow("Missing field 'title,description' to create QuickLink");
+    });
 	});
 });

@@ -4,6 +4,13 @@ import { Resource, ResourceFile } from "@models/resources.model";
 import { QuickLink } from "@models/quicklinks.model";
 import { FILE_ENDPOINT_URL } from "./constants";
 
+function verifyFieldsFor (resourceName: string, fields: string[], result: WithId<Document>) {
+  const missingFields = fields.filter((field) => !result[field]);
+  if (missingFields.length > 0) {
+    throw new Error(`Missing field '${missingFields}' to create ${resourceName}`);
+  }
+}
+
 export function convertResultToStudyPlan(result: WithId<Document>): StudyPlan {
 	return {
 		fileKey: result.fileKey ?? "",
@@ -30,11 +37,7 @@ export function convertResultToResource(result: WithId<Document>): Resource {
 }
 
 export function convertResultToQuickLink(result: WithId<Document>): QuickLink {
-	const missingFields = ["title", "description", "imgURI", "link", "originalLink"].filter((field) => !result[field]);
-	if (missingFields.length > 0) {
-		throw new Error(`Missing field '${missingFields}' to create a quicklink object`);
-	}
-
+  verifyFieldsFor("QuickLink", ["title", "description", "imgURI", "link", "originalLink"], result);
 	return {
 		title: result.title,
 		description: result.description,
