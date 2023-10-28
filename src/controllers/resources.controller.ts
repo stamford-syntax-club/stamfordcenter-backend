@@ -18,7 +18,9 @@ const getAllResources = async (req: Request, res: Response) => {
 
 	const converterFunc = converters[pageName];
 	if (!converterFunc) {
-		res.status(400).send(`The page ${pageName} is not supported. Supported pages are: ${Object.keys(converters).join(", ")}`);
+		res.status(400).send(
+			`The page ${pageName} is not supported. Supported pages are: ${Object.keys(converters).join(", ")}`,
+		);
 		return;
 	}
 
