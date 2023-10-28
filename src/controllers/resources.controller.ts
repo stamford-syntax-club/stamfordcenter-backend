@@ -1,13 +1,13 @@
-import { Document, WithId } from "mongodb";
 import { convertResultToQuickLink, convertResultToResource, convertResultToStudyPlan } from "@utils/converter";
 import { getConnection } from "@utils/mongoconnection";
 import { Request, Response } from "express";
+import { Converters } from "@models/converters.model";
 
-const converters = new Map<string, (result: WithId<Document>) => any>([
-	["study_plans", convertResultToStudyPlan],
-	["resources", convertResultToResource],
-	["quicklinks", convertResultToQuickLink],
-]);
+const converters: Converters = {
+	study_plans: convertResultToStudyPlan,
+	resources: convertResultToResource,
+	quicklinks: convertResultToQuickLink,
+};
 
 const getAllResources = async (req: Request, res: Response) => {
 	const pageName = req.params.page;
@@ -16,9 +16,9 @@ const getAllResources = async (req: Request, res: Response) => {
 		return;
 	}
 
-	const converterFunc = converters.get(pageName);
+	const converterFunc = converters[pageName];
 	if (!converterFunc) {
-		res.status(400).send(`The page ${pageName} is not supported.`);
+		res.status(400).send(`The page ${pageName} is not supported. Supported pages are: ${Object.keys(converters).join(", ")}`);
 		return;
 	}
 
