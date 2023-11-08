@@ -38,8 +38,7 @@ jobs:
 
             - name: change prod image tag
               run: |
-                  git config user.name "syntax-prod-bot"
-                  git config user.email "syntax-prod@bot.com"
+                  git config user.name "${{ github.actor }}"
                   sed -i -E "s/ghcr.io\/stamford-syntax-club\/stamfordcenter-backend.*$/ghcr.io\/stamford-syntax-club\/stamfordcenter-backend:${{ inputs.deploy-tag }}/" stamfordcenter/docker-compose.prod.yaml
                   git add stamfordcenter/docker-compose.prod.yaml
                   git commit -m "🤖 [CENTER-BACKEND-PROD] change docker image version to ${{ inputs.deploy-tag }}"
