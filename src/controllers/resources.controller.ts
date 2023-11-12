@@ -1,7 +1,13 @@
-import { WithId, Document } from "mongodb";
-import { convertResultToStudyPlan, convertResultToResource } from "@utils/converter";
+import { convertResultToQuickLink, convertResultToResource, convertResultToStudyPlan } from "@utils/converter";
 import { getConnection } from "@utils/mongoconnection";
 import { Request, Response } from "express";
+import { Converters } from "@models/converters.model";
+
+const converters: Converters = {
+	study_plans: convertResultToStudyPlan,
+	resources: convertResultToResource,
+	quicklinks: convertResultToQuickLink,
+};
 
 const getAllResources = async (req: Request, res: Response) => {
 	const pageName = req.params.page;
@@ -10,17 +16,12 @@ const getAllResources = async (req: Request, res: Response) => {
 		return;
 	}
 
-	let converterFunc: (result: WithId<Document>) => any;
-	switch (pageName) {
-		case "study_plans":
-			converterFunc = convertResultToStudyPlan;
-			break;
-		case "resources":
-			converterFunc = convertResultToResource;
-			break;
-		default:
-			res.status(400).send("invalid page name");
-			return;
+	const converterFunc = converters[pageName];
+	if (!converterFunc) {
+		res.status(400).send(
+			`The page ${pageName} is not supported. Supported pages are: ${Object.keys(converters).join(", ")}`,
+		);
+		return;
 	}
 
 	try {
@@ -28,9 +29,9 @@ const getAllResources = async (req: Request, res: Response) => {
 		const data = client?.db("stamfordcenter").collection(pageName).find({});
 		const results = await data?.toArray();
 		if (!results) {
-			return res.status(404).send("file not found");
+			return res.status(404).send(`content for page ${pageName} not found`);
 		}
-		const resources = results.map((result) => converterFunc(result));
+		const resources = results.map((result) => converterFunc(result)).filter((resource) => resource !== undefined);
 		res.status(200).json(resources);
 	} catch (err) {
 		console.error(`getAllResources: ${err}`);
