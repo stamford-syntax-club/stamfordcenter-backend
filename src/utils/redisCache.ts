@@ -17,18 +17,18 @@ const getFromCache = async (key: string): Promise<any | null> => {
 	}
 };
 
-const setInCache = (client: any, key: string, data: any, ttl: number = CACHE_EXPIRATION_SECONDS): Promise<void> => {
+const setInCache = (key: string, data: any, ttl: number = CACHE_EXPIRATION_SECONDS): Promise<void> => {
 	const jsonStr = JSON.stringify(data);
 
 	return new Promise((resolve, reject) => {
-		client.set(key, jsonStr, "EX", ttl, (err: Error | null, reply: string) => {
-			if (err) {
-				console.error("Redis cache Setting Error:", err);
-				reject(err);
-			} else {
-				console.log("Set operation reply:", reply);
+		redisClient.set(key, jsonStr, "GET", () => {
+			redisClient.expire(key, ttl, (err) => {
+				if (err) {
+					console.error("Error setting data in Redis :", err);
+					reject(err);
+				}
 				resolve();
-			}
+			});
 		});
 	});
 };
