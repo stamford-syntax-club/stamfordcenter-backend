@@ -30,19 +30,7 @@ Create a `.env` file with the following content
 PORT=8080
 S3_ENDPOINT=http://localhost:8333/
 MONGODB_URI=mongodb://localhost:27017
-REDIS_USERNAME=redis-username
-```
-
-In the .env file, replace the following with your own username, password, host & port number
-```
-REDIS_PASSWORD=redis-server-password
-REDIS_HOST=host-number
-REDIS_PORT=port-number
-REDIS_TLS=true
-REDIS_KEY_PATH=./redis_user_private.key
-REDIS_CERT_PATH=./redis_user_crt
-REDIS_CA_PATH=./redis_ca.pem
-
+REDIS_URL=<yoururl>
 ```
 
 Install dependencies
