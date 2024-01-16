@@ -21,12 +21,3 @@ app.use("/api/files", fileRouter);
 app.use("/api/resources", resourceRouter);
 
 export default app;
-
-
-
-
-
-
-
-
-
