@@ -16,17 +16,5 @@ export default async function cacheEndpoint(req: Request, res: Response, next: N
     if (!cachedResponse) {
         console.log(`No cache found for endpoint: ${endpoint}. Fetching data from database.`);
         next(); // Get data from the database
-
-        if (res.locals.studyPlans) {
-            const value = JSON.stringify(res.locals.studyPlans);
-            if (typeof req.originalUrl === 'string' && typeof value === 'string') {
-                await redisClient?.setEx(req.originalUrl, ttl, value);
-                console.log(`Data for endpoint: ${endpoint} cached for 30 days.`);
-            } else {
-                console.error('Invalid argument type for Redis setex command');
-            }
-        }else{
-            console.error(`No data found for endpoint: ${endpoint}`);
-        }
     }
 }

@@ -11,8 +11,6 @@ app.get("/", (req: Request, res: Response) => {
 	res.send("Express + TypeScript Server");
 });
 
-app.get('/api/resources/study_plans', getAllStudyPlans);
-
 app.use(cors());
 app.use(cacheEndpoint); // Cache GET requests
 
