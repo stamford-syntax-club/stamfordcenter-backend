@@ -3,7 +3,6 @@ import { getConnection } from "@utils/mongoconnection";
 import { Request, Response } from "express";
 import { Converters } from "@models/converters.model";
 import { getRedisClient } from "@utils/redisclient";
-import { get } from "http";
 
 
 const converters: Converters = {
@@ -41,6 +40,7 @@ const getAllResources = async (req: Request, res: Response) => {
 		// cache the response
 		const redisClient = await getRedisClient();
 		await redisClient?.setEx(req.originalUrl, cacheTTL, JSON.stringify(resources));
+		console.log(`Cached response for ${req.originalUrl}`);
 
 		res.status(200).json(resources);
 	} catch (err) {

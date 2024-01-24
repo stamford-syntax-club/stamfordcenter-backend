@@ -3,8 +3,8 @@ import cors from "cors";
 import fileRouter from "@routes/files.route";
 import studyplanRouter from "@routes/studyplans.route";
 import resourceRouter from "@routes/resources.route";
-import cacheEndpoint from "@middlewares/rediscache"; 
-import { getAllStudyPlans } from '@controllers/studyplans.controller';
+import cacheEndpoint from "@middlewares/rediscache";
+
 
 const app = express();
 app.get("/", (req: Request, res: Response) => {
