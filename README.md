@@ -30,6 +30,7 @@ Create a `.env` file with the following content
 PORT=8080
 S3_ENDPOINT=http://localhost:8333/
 MONGODB_URI=mongodb://localhost:27017
+REDIS_URL=<yoururl>
 ```
 
 Install dependencies
