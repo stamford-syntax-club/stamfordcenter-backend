@@ -1,4 +1,18 @@
 db = db.getSiblingDB("stamfordcenter");
+
+db.announcements.insertMany([
+	{
+		_id: "65212e74aac38c41507570b3",
+		subject: "STIU Market",
+		message: "Get ready for upcoming STIU Market on Thursday!",
+	},
+	{
+		_id: "65212e74aac38c21507570f8",
+		subject: "Final Exams",
+		message: "This is Week12 of the semester! Everyone ready for final exams?",
+	},
+]);
+
 db.resources.insertMany([
 	{
 		_id: "65212e74aac38c41505660b3",

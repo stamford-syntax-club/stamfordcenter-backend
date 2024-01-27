@@ -17,6 +17,6 @@ app.use(cacheEndpoint); // Cache GET requests
 app.use("/api/study_plans", studyplanRouter); // to be removed after frontend has migrated
 app.use("/api/files", fileRouter);
 app.use("/api/resources", resourceRouter);
-app.use("/api/announcement", announcementRouter);
+app.use("/api/announcements", announcementRouter);
 
 export default app;
