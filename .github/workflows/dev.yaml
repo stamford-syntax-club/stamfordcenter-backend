@@ -54,6 +54,7 @@ jobs:
             - name: change image tag
               run: |
                   git config user.name "${{ github.actor }}"
+                  git config user.email "${{ github.actor }}@stamford.dev"
                   sed -i -E "s/ghcr.io\/stamford-syntax-club\/stamfordcenter-backend.*$/ghcr.io\/stamford-syntax-club\/stamfordcenter-backend:${GITHUB_SHA}/" stamfordcenter/docker-compose.dev.yaml
                   git add stamfordcenter/docker-compose.dev.yaml
                   git commit -m "🤖 [CENTER-BACKEND-DEV] change docker image version to ${GITHUB_SHA}"
