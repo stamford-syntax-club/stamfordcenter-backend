@@ -1,6 +1,7 @@
 interface Announcement {
-	subject: string;
-	message: string;
+	title: string;
+	content: string;
+	type: string;
 }
 
 export { Announcement };
