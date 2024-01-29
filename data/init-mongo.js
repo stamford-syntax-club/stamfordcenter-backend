@@ -6,16 +6,16 @@ db.announcements.insertMany([
 		title: "STIU Market",
 		content: "Get ready for upcoming STIU Market on Thursday!",
 		type: "notice",
-		createdAt: new Date(),
-		expiresAt: new Date("2024-02-15"),
+		createdAt: new Date("2024-01-20"),
+		expiresAt: new Date("2024-2-10"),
 	},
 	{
 		_id: "65212e74aac38c21507570f2",
 		title: "Final Exams",
 		content: "This is Week12 of the semester! Everyone ready for final exams?",
 		type: "warning",
-		createdAt: new Date(),
-		expiresAt: new Date("2024-02-26"),
+		createdAt: new Date("2024-01-20"),
+		expiresAt: new Date("2024-02-20"),
 	},
 ]);
 
