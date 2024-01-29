@@ -1,19 +1,21 @@
-const { Timestamp } = require("mongodb");
-
 db = db.getSiblingDB("stamfordcenter");
 
 db.announcements.insertMany([
 	{
-		_id: "65212e74aac38c41507570b3",
+		_id: "65212e74aac38c41507570b9",
 		title: "STIU Market",
 		content: "Get ready for upcoming STIU Market on Thursday!",
 		type: "notice",
+		createdAt: new Date(),
+		expiresAt: "2024-02-05T12:00:00.000Z",
 	},
 	{
-		_id: "65212e74aac38c21507570f8",
+		_id: "65212e74aac38c21507570f2",
 		title: "Final Exams",
 		content: "This is Week12 of the semester! Everyone ready for final exams?",
 		type: "warning",
+		createdAt: new Date(),
+		expiresAt: "2024-02-05T12:00:00.000Z",
 	},
 ]);
 
