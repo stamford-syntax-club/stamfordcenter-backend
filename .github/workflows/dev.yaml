@@ -38,8 +38,8 @@ jobs:
                   tags: |
                       ghcr.io/stamford-syntax-club/stamfordcenter-backend:${{ env.GITHUB_SHA }}
                   push: true
-                  cache-from: type=gha
-                  cache-to: type=gha,mode=max
+                  cache-from: type=registry,ref=ghcr.io/stamford-syntax-club/stamfordcenter-backend
+                  cache-to: type=registry,ref=ghcr.io/stamford-syntax-club/stamfordcenter-backend
 
             - name: Image digest
               run: echo ${{ steps.docker_build.outputs.digest }}
