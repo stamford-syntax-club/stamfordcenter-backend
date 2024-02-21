@@ -2,7 +2,7 @@ name: Dev Environment CI/CD
 
 on:
     push:
-        branches: [main, khing/optimize/pipeline]
+        branches: [main]
 
 jobs:
     build-and-push:
