@@ -21,3 +21,45 @@ jobs:
               run: |
                   docker compose -f docker-compose.integration.yml down -v &&
                   docker compose -f docker-compose.integration.yml up --build --force-recreate --abort-on-container-exit --exit-code-from app
+
+on:
+    push:
+
+jobs:
+    prettier:
+        name: Format code with Prettier
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                fetch-depth: 0 
+
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                node-version: '21.6.2'
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Check for changed files in src and test directories
+              id: changed-files
+              run: |
+                echo "Files changed:"
+                CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '^(src|test)/' | xargs)
+                echo $CHANGED_FILES
+                echo "::set-output name=changed_files::$(echo $CHANGED_FILES)"
+      
+            - name: Run Prettier on changed files
+              if: steps.changed-files.outputs.changed_files != ''
+              run: |
+                npx prettier --write ${{ steps.changed-files.outputs.changed_files }}
+
+            - name: Commit and push if changed
+              run: |
+                git config --global user.email "action@github.com"
+                git config --global user.name "GitHub Action"
+                git add -A
+                git commit -m "Format code with Prettier" --allow-empty
+                git push
