@@ -41,17 +41,18 @@ jobs:
                   run: npm install
 
                 - name: Check for changed files in src and test directories
-                  id: changed-files
+                  id: get-changed-files
                   run: |
                     echo "Files changed:"
                     CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '^(src|test)/' | xargs)
                     echo $CHANGED_FILES
-                    echo "::set-output name=changed_files::$(echo $CHANGED_FILES)"
+                    echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
           
                 - name: Run Prettier on changed files
-                  if: steps.changed-files.outputs.changed_files != ''
+                  if: steps.get-changed-files.outputs.changed_files != ''
                   run: |
-                    npx prettier --write ${{ steps.changed-files.outputs.changed_files }}
+                    npx prettier --write ${{ steps.get-changed-files.outputs.changed_files }}
+
 
                 - name: Commit and push if changed
                   run: |
