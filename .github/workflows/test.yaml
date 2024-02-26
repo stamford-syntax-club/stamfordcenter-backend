@@ -4,71 +4,70 @@ on:
     pull_request:
 
 jobs:
-  ci:
-    name: Run tests during pull request
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    ci:
+        name: Run tests during pull request
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
 
-      - name: Install Jest
-        run: npm install --save-dev jest ts-jest @types/jest
+            - name: Install Jest
+              run: npm install --save-dev jest ts-jest @types/jest
 
-      - name: Unit test
-        run: npm run unit
+            - name: Unit test
+              run: npm run unit
 
-      - name: Integration test inside Docker Compose
-        run: |
-          docker compose -f docker-compose.integration.yml down -v &&
-          docker compose -f docker-compose.integration.yml up --build --force-recreate --abort-on-container-exit --exit-code-from app
+            - name: Integration test inside Docker Compose
+              run: |
+                  docker compose -f docker-compose.integration.yml down -v &&
+                  docker compose -f docker-compose.integration.yml up --build --force-recreate --abort-on-container-exit --exit-code-from app
 
+    prettier:
+        name: Format code with Prettier
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0 # Fetch all history for git diff
+                  ref: ${{ github.head_ref }} # Check out the head branch of the current PR
 
-  prettier:
-    name: Format code with Prettier
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Fetch all history for git diff
-          ref: ${{ github.head_ref }} # Check out the head branch of the current PR
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "18"
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
+            - name: Install dependencies
+              run: npm install prettier
 
-      - name: Install dependencies
-        run: npm install prettier
+            - name: Check for changed files in src and test directories
+              id: get-changed-files
+              run: |
+                  echo "Files changed:" #List all the file change from scr and test directory
+                  CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -E '^(src|test)/' | xargs)
+                  echo $CHANGED_FILES
+                  echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
 
-      - name: Check for changed files in src and test directories
-        id: get-changed-files
-        run: |
-          echo "Files changed:" #List all the file change from scr and test directory
-          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -E '^(src|test)/' | xargs)
-          echo $CHANGED_FILES
-          echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
+            - name: Run Prettier on changed files
+              if: steps.get-changed-files.outputs.changed_files != ''
+              run: |
+                  npx prettier --write ${{ steps.get-changed-files.outputs.changed_files }}
 
-      - name: Run Prettier on changed files
-        if: steps.get-changed-files.outputs.changed_files != ''
-        run: |
-          npx prettier --write ${{ steps.get-changed-files.outputs.changed_files }}
+            - name: Commit and push if changed
+              if: steps.get-changed-files.outputs.changed_files != '' # Avoid making a commit if there are no changes to commit
+              run: |
+                  git config --global user.email "action@github.com"
+                  git config --global user.name "GitHub Action"
+                  git diff
+                  git add -A
+                  if git diff --cached --quiet; then
+                    echo "[BOT] No file changes"
+                  else
+                    git commit -m "[BOT] Format code with Prettier"
+                    git push origin HEAD:${{ github.head_ref }} # Pushes to the branch related to the PR
+                  fi
 
-      - name: Commit and push if changed
-        if: steps.get-changed-files.outputs.changed_files != '' # Avoid making a commit if there are no changes to commit
-        run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-          git diff
-          git add -A
-          if git diff --cached --quite; then
-            echo "[BOT] No file changes"
-          else
-            git commit -m "[BOT] Format code with Prettier"
-            git push origin HEAD:${{ github.head_ref }} # Pushes to the branch related to the PR
-          fi
-
-      - name: Handle case with no changes
-        if: steps.get-changed-files.outputs.changed_files == ''
-        run: |
-          echo "[BOT] There are no changes in src or test directories to format."
+            - name: Handle case with no changes
+              if: steps.get-changed-files.outputs.changed_files == ''
+              run: |
+                  echo "[BOT] There are no changes in src or test directories to format."
