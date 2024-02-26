@@ -1,21 +1,22 @@
 # ---- Build Stage ----
-FROM node:alpine AS builder
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json ./
+COPY package.json package-lock.json ./
 
 # Setting environment variable to development to install all dependencies
 ENV NODE_ENV=development
 
-RUN npm install
+# Install exactly as described in package-lock.json without any additional modifications - ensure predictable and stable environment
+RUN npm ci 
 
 COPY . .
 
 RUN npm run build
 
 # ---- Production Stage ----
-FROM node:alpine
+FROM node:18-alpine
 
 WORKDIR /app
 
@@ -24,10 +25,10 @@ ENV NODE_ENV=production
 
 # Copy only the built code and package.json
 COPY --from=builder /app/dist ./dist
-COPY package.json ./
+COPY --from=builder /app/package.json /app/package-lock.json ./
 
 # Install only production dependencies
-RUN npm install --omit=dev
+RUN npm ci --omit=dev
 
 EXPOSE 8080
 
