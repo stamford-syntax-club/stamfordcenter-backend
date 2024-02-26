@@ -61,8 +61,12 @@ jobs:
           git config --global user.name "GitHub Action"
           git diff
           git add -A
-          git commit -m "[BOT] Format code with Prettier"
-          git push origin HEAD:${{ github.head_ref }} # Pushes to the branch related to the PR
+          if git diff --cached --quite; then
+            echo "[BOT] No file changes"
+          else
+            git commit -m "[BOT] Format code with Prettier"
+            git push origin HEAD:${{ github.head_ref }} # Pushes to the branch related to the PR
+          fi
 
       - name: Handle case with no changes
         if: steps.get-changed-files.outputs.changed_files == ''
