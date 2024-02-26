@@ -5,7 +5,6 @@ import studyplanRouter from "@routes/studyplans.route";
 import resourceRouter from "@routes/resources.route";
 import cacheEndpoint from "@middlewares/rediscache";
 
-
 const app = express();
 app.get("/", (req: Request, res: Response) => {
 	res.send("Express + TypeScript Server");
